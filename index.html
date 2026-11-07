@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code Setup Guide</title>
+<meta name="description" content="Student guide to installing Claude Code, sandboxing it to a course folder, connecting GitHub, and publishing a first website.">
+<style>
+:root{--ink:#1f1f1f;--muted:#5b5b5b;--accent:#c25e00;--rule:#e2ddd5;--code-bg:#f4f1ec;--bg:#fffdf9;--panel:#ffffff}
+@media (prefers-color-scheme:dark){:root{--ink:#ece9e4;--muted:#b0aaa2;--accent:#ff9b3d;--rule:#3a3632;--code-bg:#26231f;--bg:#181614;--panel:#1f1c19}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Georgia,"Times New Roman",serif}
+main{max-width:820px;margin:0 auto;padding:40px 20px 80px}
+h1{font-size:2.1rem;line-height:1.2;margin:0 0 .3rem}
+h2{font-size:1.45rem;margin:2.6rem 0 .6rem;padding-top:.4rem;border-top:3px solid var(--accent)}
+.byline{color:var(--muted);margin-top:0}
+a{color:var(--accent)}
+code{font:0.88em/1.4 Consolas,Menlo,monospace;background:var(--code-bg);padding:.1em .3em;border-radius:4px}
+pre{background:var(--code-bg);padding:12px 14px;border-radius:6px;overflow-x:auto;border-left:4px solid var(--accent)}
+pre code{background:none;padding:0;font-size:.9rem}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.95rem;display:block;overflow-x:auto}
+th,td{border:1px solid var(--rule);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--code-bg)}
+figure{margin:1.2rem 0}
+figure img{max-width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;display:block}
+figcaption{font-style:italic;color:var(--muted);font-size:.92rem;margin-top:.35rem}
+blockquote{margin:.8rem 0;padding:10px 14px;background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:4px;font-family:Consolas,Menlo,monospace;font-size:.92rem}
+ul.checklist{list-style:none;padding-left:0}
+ul.checklist li::before{content:"\2610  ";font-size:1.1em}
+li{margin:.3rem 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Student Guide: Installing Claude Code and Connecting GitHub</h1>
+<p class="byline">Nov 6, 2026 · <strong>Written by Claude and Hilary Havens</strong></p>
+
+<p>This guide contains instructions on how to install Claude Code on Windows, Apple, Linux, and Chromebook systems, and - once that is done - how to connect Claude to your GitHub account so that Claude can create and publish projects. If all goes smoothly, this process can take about 20 minutes: you will install Claude Code with one command for your system, sign in, then install Git and the GitHub CLI and run <code>gh auth login</code>.</p>
+
+<h2>Before you start</h2>
+<p>Everyone needs a paid Claude account, which you can purchase at <a href="https://claude.ai/">https://claude.ai/</a>. I recommend purchasing the Pro account, which costs $20 a month. The free claude.ai plan does not include Claude Code. I also have three free 1-week passes that I can share. If you are unwilling / unable to purchase a one-month Claude subscription, please email me (<a href="mailto:hhavens1@utk.edu">hhavens1@utk.edu</a>), and I will share my referral link with you. <u>You will have to cancel within 1 week if you do not want to be charged the monthly rate.</u> If you are unable to install Claude on your computer, you can also use UT's AI Hub (<a href="https://aihub.tennessee.edu">https://aihub.tennessee.edu</a>) for this section of the class, but you will have to do much more work to achieve similar results because it will not be able to build projects in GitHub.</p>
+<p>For this process, you will also need a free GitHub account (<a href="https://github.com/signup">github.com/signup</a>), about 4 GB of RAM, and a supported system: macOS 13+, Windows 10 (1809) or later, or Ubuntu 20.04+ / Debian 10+.</p>
+<p>Everything below happens in a terminal. How to open one:</p>
+<table>
+<tr><th>System</th><th>How to open a terminal</th></tr>
+<tr><td>macOS</td><td>Press Cmd+Space, type <strong>Terminal</strong>, press Return</td></tr>
+<tr><td>Windows</td><td>Press the Start key, type <strong>PowerShell</strong>, open <strong>Windows PowerShell</strong> (not as Administrator)</td></tr>
+<tr><td>Linux</td><td>Press Ctrl+Alt+T, or find <strong>Terminal</strong> in the app menu</td></tr>
+<tr><td>Chromebook</td><td>Settings &gt; Advanced &gt; Developers &gt; turn on <strong>Linux development environment</strong>, then open the <strong>Terminal</strong> app</td></tr>
+</table>
+<p>Tip for students: copy each command exactly, paste it into the terminal, and press Enter. Close and reopen the terminal after installing anything.</p>
+
+<h2>Install on macOS</h2>
+<p>In Terminal, run the recommended installer:</p>
+<pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
+<p>Students who already use Homebrew can run this instead:</p>
+<pre><code>brew install --cask claude-code</code></pre>
+<p>The installer version updates itself; the Homebrew version needs <code>brew upgrade claude-code</code> from time to time.</p>
+
+<h2>Install on Windows</h2>
+<p>Install <a href="https://git-scm.com/downloads/win">Git for Windows</a> first, accepting the default options. It is optional for Claude Code, but students need Git for the GitHub steps anyway, and it gives Claude Code a Bash shell to work in.</p>
+<figure><img src="images/git-for-windows.png" alt="The git-scm.com Install page with the Windows tab selected. The first line reads: Click here to download the latest x64 version of Git for Windows."><figcaption>The Git for Windows download page. Click "Click here to download," run the file, and accept every default.</figcaption></figure>
+<p>Then, in <strong>PowerShell</strong> (no Administrator rights needed):</p>
+<pre><code>irm https://claude.ai/install.ps1 | iex</code></pre>
+<p>If a student is in the older <strong>Command Prompt (CMD)</strong> instead:</p>
+<pre><code>curl -fsSL https://claude.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd</code></pre>
+<p>Alternative for students who use WinGet:</p>
+<pre><code>winget install Anthropic.ClaudeCode</code></pre>
+<p>The two most common mix-ups have telltale errors:</p>
+<ul>
+<li><code>'irm' is not recognized</code> means they are in CMD: use the CMD command, or open PowerShell.</li>
+<li><code>The token '&amp;&amp;' is not a valid statement separator</code> means they are in PowerShell: use the PowerShell command.</li>
+</ul>
+<figure><img src="images/windows-cmd-error.png" alt="A Command Prompt window. The PowerShell install command was typed, and the reply says 'irm' is not recognized as an internal or external command, operable program or batch file."><figcaption>What the wrong-shell mistake looks like: the PowerShell command typed into Command Prompt.</figcaption></figure>
+<p>Students who already use WSL (Windows Subsystem for Linux) should open their WSL terminal and follow the Linux steps there instead.</p>
+
+<h2>Install on Linux and Chromebook</h2>
+<p>On Linux, WSL, or a Chromebook's Linux terminal, run:</p>
+<pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
+<p>If the terminal says <code>curl: command not found</code> (common on fresh Chromebook Linux), install it first with <code>sudo apt update &amp;&amp; sudo apt install -y curl</code>, then rerun the command above.</p>
+<figure><img src="images/chromebook-curl.png" alt="A Chromebook Linux terminal with the prompt student@penguin:~$. The install command returns -bash: curl: command not found. The student then runs sudo apt update &amp;&amp; sudo apt install -y curl, sees Setting up curl, and reruns the install command."><figcaption>Chromebook: the curl error, the fix, and the install command run again.</figcaption></figure>
+<p>Chromebooks need the Linux development environment turned on (see Before you start). School-managed Chromebooks may block it; those students can use <a href="https://claude.ai/code">Claude Code on the web</a> or the UT AI Hub (<a href="https://aihub.tennessee.edu">https://aihub.tennessee.edu</a>) instead.</p>
+
+<h2>First launch and sign-in</h2>
+<p>Close the terminal, open a new one, and check the install:</p>
+<pre><code>claude --version</code></pre>
+<p>It should print a version number such as <code>2.1.211 (Claude Code)</code>. Then start Claude Code:</p>
+<pre><code>claude</code></pre>
+<p>A browser window opens. Students sign in with their Claude account and approve access, then return to the terminal. Type <code>/exit</code> (or press Ctrl+C twice) to quit.</p>
+<p>If anything looks wrong, <code>claude doctor</code> prints a health check with suggested fixes.</p>
+
+<h2>Sandbox your work with Claude</h2>
+<p>In order to "sandbox" your work with Claude, or isolate it so that it doesn't interfere with the rest of your files, you should always start Claude Code from one course folder, and adjust a settings file to stop Claude from reading or changing files outside it. On Mac, Linux, and WSL2, the sandbox also enforces this at the operating-system level for every command Claude runs.</p>
+<p>There are two layers, and they cover different things:</p>
+<table>
+<tr><th>Layer</th><th>What it restricts</th><th>macOS</th><th>Linux / Chromebook / WSL2</th><th>Windows (PowerShell)</th></tr>
+<tr><td>Folder lock (settings file)</td><td>Claude's own read, edit, and write tools</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Sandbox</td><td>Every terminal command Claude runs: file writes and internet access</td><td>Yes, built in</td><td>Yes, after one install</td><td>No: use WSL2 for this layer</td></tr>
+</table>
+<ol>
+<li><p>Make a course folder and always start Claude from inside it. Claude's working folder is wherever the terminal is when <code>claude</code> is typed, so never start it from the home folder.</p>
+<p>macOS, Linux, Chromebook, WSL:</p>
+<pre><code>mkdir -p ~/claude-class
+cd ~/claude-class</code></pre>
+<p>Windows PowerShell:</p>
+<pre><code>mkdir $HOME\claude-class
+cd $HOME\claude-class</code></pre></li>
+<li><p>Linux, Chromebook, and WSL2 only: install the two sandbox helpers. Mac needs nothing.</p>
+<pre><code>sudo apt-get install -y bubblewrap socat</code></pre></li>
+<li><p>Open the user settings file in a text editor. It applies every time the student runs Claude.</p>
+<p>macOS, Linux, Chromebook, WSL:</p>
+<pre><code>mkdir -p ~/.claude
+nano ~/.claude/settings.json</code></pre>
+<p>Windows PowerShell:</p>
+<pre><code>mkdir -Force $HOME\.claude
+notepad $HOME\.claude\settings.json</code></pre></li>
+<li><p>Paste this in exactly, save, and close the editor (in nano: Ctrl+O, Enter, Ctrl+X). If the file already has text in it, stop and ask the instructor rather than overwrite it.</p>
+<pre><code>{
+  "sandbox": {
+    "enabled": true,
+    "filesystem": {
+      "denyRead": ["~/.ssh", "~/.aws"]
+    },
+    "network": {
+      "allowedDomains": ["github.com", "api.github.com"]
+    }
+  },
+  "permissions": {
+    "disableBypassPermissionsMode": "disable",
+    "blockReadsOutsideWorkingDirectories": true,
+    "blockWritesOutsideWorkingDirectories": true,
+    "deny": ["Read(~/.ssh/**)", "Read(~/.aws/**)"]
+  }
+}</code></pre></li>
+<li><p>Start Claude from the course folder and confirm it worked. Type <code>/sandbox</code> to see that the sandbox is on (Mac, Linux, WSL2), and <code>/status</code> to see that the settings file loaded.</p></li>
+<li><p>Try to break it. Ask Claude: "List the files in my Documents folder." It should refuse, because Documents is outside the course folder.</p></li>
+</ol>
+<p>What each setting does:</p>
+<table>
+<tr><th>Setting</th><th>Effect</th></tr>
+<tr><td><code>sandbox.enabled</code></td><td>Runs Claude's terminal commands inside the operating system's sandbox: they can write only in the course folder and a temp folder</td></tr>
+<tr><td><code>sandbox.filesystem.denyRead</code></td><td>Sandboxed commands cannot read the student's SSH keys or cloud credentials</td></tr>
+<tr><td><code>sandbox.network.allowedDomains</code></td><td>Sandboxed commands reach only GitHub; any other site needs the student's approval</td></tr>
+<tr><td><code>blockReadsOutsideWorkingDirectories</code></td><td>Claude's file tools refuse to read anything outside the folder it was started in</td></tr>
+<tr><td><code>blockWritesOutsideWorkingDirectories</code></td><td>Claude's file tools refuse to create or edit anything outside that folder</td></tr>
+<tr><td><code>disableBypassPermissionsMode</code></td><td>Turns off the mode that skips permission prompts, so Claude always asks first</td></tr>
+<tr><td><code>permissions.deny</code></td><td>A second lock on the SSH and cloud-credential folders</td></tr>
+</table>
+<p>Things to know before class:</p>
+<ul>
+<li><strong>Windows without WSL2:</strong> the folder lock works, but terminal commands are not sandboxed. Students should read each command before approving it. For full protection, run Claude inside WSL2 and follow the Linux steps.</li>
+<li><strong>A blocked command:</strong> if a command fails inside the sandbox, Claude may ask to rerun it outside. That needs the student's approval, and "No" is the safe answer when unsure.</li>
+<li><strong>Version:</strong> the write lock needs Claude Code 2.1.314 or later. Check with <code>claude --version</code>; run <code>claude update</code> if it is older.</li>
+<li><strong>Lab computers:</strong> an administrator can put the same settings in a managed file that students cannot change: <code>/Library/Application Support/ClaudeCode/managed-settings.json</code> (Mac), <code>/etc/claude-code/managed-settings.json</code> (Linux), or <code>C:\Program Files\ClaudeCode\managed-settings.json</code> (Windows).</li>
+</ul>
+
+<h2>Install Git and the GitHub CLI</h2>
+<p>Claude Code talks to GitHub through two tools: <code>git</code> (version control) and <code>gh</code> (the GitHub command-line tool, which handles sign-in, repos, and pull requests).</p>
+<table>
+<tr><th>System</th><th>Install command</th></tr>
+<tr><td>macOS</td><td><code>xcode-select --install</code> (gives Git), then <code>brew install gh</code></td></tr>
+<tr><td>Windows</td><td>Git for Windows (installed above), then <code>winget install --id GitHub.cli</code></td></tr>
+<tr><td>Linux / Chromebook / WSL</td><td><code>sudo apt install -y git</code>, then follow the apt steps at <a href="https://github.com/cli/cli/blob/trunk/docs/install_linux.md">cli.github.com</a></td></tr>
+</table>
+<figure><img src="images/github-cli.png" alt="The cli.github.com home page, headed Take GitHub to the command line, with an Install with WinGet box showing winget install --id GitHub.cli and a green Copy button."><figcaption>cli.github.com shows the right install command for your system; the menu on the left of the box switches between options.</figcaption></figure>
+<p>Mac students without Homebrew can download the <code>gh</code> installer from <a href="https://cli.github.com">cli.github.com</a> instead. Reopen the terminal, then confirm both work with <code>git --version</code> and <code>gh --version</code>.</p>
+<figure><img src="images/windows-versions.png" alt="A PowerShell window showing three checks: claude --version prints 2.1.319 (Claude Code), git --version prints git version 2.54.0.windows.1, and gh --version prints gh version 2.93.0."><figcaption>Windows: all three tools installed. Version numbers will differ; any number means it worked.</figcaption></figure>
+<figure><img src="images/mac-versions.png" alt="A macOS Terminal window with the zsh prompt student@MacBook ~ %. claude --version prints 2.1.319 (Claude Code), git --version prints git version 2.54.0, and gh --version prints gh version 2.93.0."><figcaption>macOS: the same three checks in Terminal.</figcaption></figure>
+<figure><img src="images/linux-versions.png" alt="An Ubuntu terminal window with the prompt student@ubuntu:~$. claude --version prints 2.1.319 (Claude Code), git --version prints git version 2.54.0, and gh --version prints gh version 2.93.0."><figcaption>Linux, WSL, or Chromebook: the same three checks.</figcaption></figure>
+
+<h2>Connect to GitHub</h2>
+<p>This is the same on every system. It takes three commands.</p>
+<ol>
+<li><p>Sign in to GitHub from the terminal:</p>
+<pre><code>gh auth login</code></pre>
+<p>Choose <strong>GitHub.com</strong>, then <strong>HTTPS</strong>, answer <strong>Yes</strong> to "Authenticate Git with your GitHub credentials," and pick <strong>Login with a web browser</strong>. Copy the one-time code shown, press Enter, and paste it into the browser page.</p>
+<figure><img src="images/windows-gh-login.png" alt="A PowerShell window running gh auth login. Answers shown: GitHub.com, HTTPS, Yes, Login with a web browser. It then shows a one-time code, A1B2-C3D4, and ends with Authentication complete and Logged in as your-username."><figcaption>Windows: a completed <code>gh auth login</code>. Use the arrow keys and Enter to pick each answer. Each student's one-time code will differ.</figcaption></figure>
+<figure><img src="images/mac-gh-login.png" alt="A macOS Terminal window running gh auth login. Answers shown: GitHub.com, HTTPS, Yes, Login with a web browser. It shows a one-time code, A1B2-C3D4, then Authentication complete and Logged in as your-username."><figcaption>macOS: the questions and answers are identical.</figcaption></figure>
+<figure><img src="images/linux-gh-login.png" alt="An Ubuntu terminal window running gh auth login. Answers shown: GitHub.com, HTTPS, Yes, Login with a web browser. It shows a one-time code, A1B2-C3D4, then Authentication complete and Logged in as your-username."><figcaption>Linux, WSL, or Chromebook: identical again. If no browser opens on its own, open github.com/login/device yourself and enter the code.</figcaption></figure></li>
+<li><p>Tell Git who you are (use the email on your GitHub account):</p>
+<pre><code>git config --global user.name "Your Name"
+git config --global user.email "you@example.com"</code></pre></li>
+<li><p>Check the connection:</p>
+<pre><code>gh auth status</code></pre>
+<p>It should say "Logged in to github.com account (your username)."</p>
+<figure><img src="images/windows-gh-status.png" alt="A PowerShell window running gh auth status. It shows a green check and Logged in to github.com account your-username (keyring), Git operations protocol https, and a masked token."><figcaption>Windows: a successful check. The green check mark and your own username are what matter.</figcaption></figure>
+<figure><img src="images/mac-gh-status.png" alt="A macOS Terminal window running gh auth status, showing a check mark and Logged in to github.com account your-username (keyring), Git operations protocol https, and a masked token."><figcaption>macOS: a successful check.</figcaption></figure>
+<figure><img src="images/linux-gh-status.png" alt="An Ubuntu terminal window running gh auth status, showing a check mark and Logged in to github.com account your-username (keyring), Git operations protocol https, and a masked token."><figcaption>Linux, WSL, or Chromebook: a successful check. On some Linux systems the word in parentheses is a file path instead of keyring; that is fine.</figcaption></figure></li>
+</ol>
+<p>That is all Claude Code needs. When a student asks Claude to commit, push, or open a pull request, it uses these same <code>git</code> and <code>gh</code> tools and the login they just made. Claude asks permission before running each command, so students stay in control.</p>
+
+<h2>Practice exercise: vibe code and publish a website</h2>
+<p>If you finish the installation before the end of class, I recommend trying the following short exercise to confirm every piece works together.</p>
+<p>In this exercise you will "vibe code": you describe what you want in plain English, and Claude writes the code. You will build a one-page website about a book you love, save it to GitHub, and publish it on the web with GitHub Pages. Everything happens in your terminal (PowerShell on Windows, Terminal on Mac, the Linux terminal on Linux or a Chromebook). Allow about 30 minutes.</p>
+<p>Your website will be public, so anyone with the link can see it. Do not put your address, phone number, student ID, or anything else private on it.</p>
+<ol>
+<li><p>Open your terminal, go to your course folder, make a folder for the website, and start Claude there.</p>
+<p>Windows PowerShell:</p>
+<pre><code>cd $HOME\claude-class
+mkdir my-first-site
+cd my-first-site
+claude</code></pre>
+<p>Mac, Linux, or Chromebook:</p>
+<pre><code>cd ~/claude-class
+mkdir my-first-site
+cd my-first-site
+claude</code></pre></li>
+<li><p>Ask Claude to build the page. Type this request, filling in your own book, and press Enter:</p>
+<blockquote>Build a one-page website about a book I love: [title] by [author]. Put everything in a single file called index.html, with the styling included. Give it a title, a short summary, three reasons I recommend the book, and a favorite quotation. Make it look good on a phone.</blockquote>
+<p>Claude will show you the file it wants to create and ask permission. Approve it.</p></li>
+<li><p>Look at your page. Open the my-first-site folder in File Explorer (Windows), Finder (Mac), or the Files app under Linux files (Chromebook), and double-click index.html. It opens in your browser.</p></li>
+<li><p>Vibe code: improve the page by asking for changes, one at a time. After each change, refresh the browser to see it. For example:</p>
+<blockquote>Change the color scheme to dark green and cream.</blockquote>
+<blockquote>Add a short section about the author.</blockquote>
+<blockquote>The quotation is too small. Make it stand out.</blockquote>
+<p>Check the quotation and any facts against the book itself. Claude can get quotations wrong, and you are responsible for what you publish.</p></li>
+<li><p>Save the project to GitHub. When you like the page, type:</p>
+<blockquote>Commit this to a new git repository. Then create a public GitHub repository called my-first-site and push it.</blockquote>
+<p>Approve each command. Claude should finish by giving you a link to your repository on github.com.</p></li>
+<li><p>Publish the website. Type:</p>
+<blockquote>Turn on GitHub Pages for this repository from the main branch, and tell me the website address.</blockquote>
+<p>Your address will look like <code>https://your-username.github.io/my-first-site/</code>. The first time, it can take a minute or two to appear; if you see a 404 page, wait and refresh.</p></li>
+<li><p>Make one more change and publish it. Ask for any change you like, then type:</p>
+<blockquote>Commit and push this change.</blockquote>
+<p>Wait a minute, refresh your website, and you should see the update. This is the whole cycle: change, commit, push, publish.</p></li>
+<li><p>Type <code>/exit</code> to leave Claude when you are done.</p></li>
+</ol>
+<p>You do not need to type any of the commands below; Claude proposes them. Knowing what they mean helps you decide whether to approve them:</p>
+<table>
+<tr><th>You will see</th><th>What it does</th></tr>
+<tr><td><code>git init</code></td><td>Starts tracking changes in this folder</td></tr>
+<tr><td><code>git add</code> and <code>git commit -m "..."</code></td><td>Saves a snapshot of your files, with a short note</td></tr>
+<tr><td><code>gh repo create my-first-site --public --source=. --push</code></td><td>Creates the repository on GitHub and uploads your files</td></tr>
+<tr><td><code>gh api repos/.../pages ...</code></td><td>Turns on GitHub Pages for the repository</td></tr>
+<tr><td><code>git push</code></td><td>Uploads your latest snapshot to GitHub</td></tr>
+</table>
+<p>If something goes wrong:</p>
+<ul>
+<li><strong>"Please tell me who you are"</strong> when committing: you skipped step 2 of Connect to GitHub. Run the two <code>git config</code> commands there, then ask Claude to try again.</li>
+<li><strong>A 404 page at your website address:</strong> GitHub Pages is still building. Wait two minutes and refresh.</li>
+<li><strong>Claude says it cannot reach GitHub:</strong> check <code>gh auth status</code> in a new terminal window, then try again.</li>
+</ul>
+<p>When you are done, check that you have:</p>
+<ul class="checklist">
+<li><code>claude --version</code> working</li>
+<li>Signed in to Claude Code</li>
+<li>Seen Claude refuse to list files outside your course folder</li>
+<li><code>gh auth status</code> showing you logged in</li>
+<li>A my-first-site repository on your GitHub account</li>
+<li>Your website live at <code>https://your-username.github.io/my-first-site/</code></li>
+</ul>
+
+<h2>Troubleshooting</h2>
+<table>
+<tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr>
+<tr><td><code>claude: command not found</code> right after install</td><td>Terminal opened before install finished</td><td>Close and reopen the terminal; if it persists, run the installer again and read its PATH message</td></tr>
+<tr><td><code>'irm' is not recognized</code></td><td>Windows CMD, not PowerShell</td><td>Use the CMD command, or open PowerShell</td></tr>
+<tr><td><code>The token '&amp;&amp;' is not a valid statement separator</code></td><td>PowerShell, not CMD</td><td>Use the PowerShell command</td></tr>
+<tr><td>Sign-in says no Claude Code access</td><td>Free Claude plan</td><td>Upgrade to Pro, or use the course's provided account</td></tr>
+<tr><td><code>gh: command not found</code></td><td>GitHub CLI not installed, or terminal not reopened</td><td>Repeat the Git and GitHub CLI step, then reopen the terminal</td></tr>
+<tr><td><code>git push</code> asks for a password</td><td>Git not linked to <code>gh</code></td><td>Run <code>gh auth setup-git</code>, then try again</td></tr>
+<tr><td><code>/sandbox</code> says dependencies are missing</td><td>Linux or WSL2 without the sandbox helpers</td><td>Run <code>sudo apt-get install -y bubblewrap socat</code>, then restart Claude Code</td></tr>
+<tr><td>"Sandboxing requires WSL2"</td><td>Windows using the older WSL1</td><td>Upgrade the distribution to WSL2, or use the Windows steps without the sandbox</td></tr>
+<tr><td>Claude can't read a file the student needs</td><td>The file is outside the course folder</td><td>Move or copy it into the course folder; don't loosen the settings</td></tr>
+<tr><td>Anything else</td><td>Varies</td><td>Run <code>claude doctor</code> and share its output with the instructor</td></tr>
+</table>
+<p>Avoid <code>sudo</code> with any Claude Code install command, and never paste API keys or passwords into a chat with Claude.</p>
+
+<h2>Sources</h2>
+<ul>
+<li><a href="https://code.claude.com/docs/en/setup">Claude Code setup guide</a> (Anthropic; install commands, requirements, and plan types checked 2026-11-06)</li>
+<li><a href="https://code.claude.com/docs/en/sandboxing">Claude Code sandboxing</a>, <a href="https://code.claude.com/docs/en/permissions">permissions</a>, and <a href="https://code.claude.com/docs/en/settings">settings</a> (Anthropic; sandbox support by system, folder-lock settings, and settings file locations checked 2026-11-06)</li>
+<li><a href="https://cli.github.com/manual/">GitHub CLI manual</a> (GitHub; <code>gh</code> install and <code>gh auth login</code>, from general knowledge, not re-checked today)</li>
+<li><a href="https://git-scm.com/downloads">Git downloads</a></li>
+</ul>
+
+</main>
+</body>
+</html>
