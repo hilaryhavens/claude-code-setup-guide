@@ -23,10 +23,30 @@
 <p>Students who already use Homebrew can run this instead:</p>
 <pre><code>brew install --cask claude-code</code></pre>
 <p>The installer version updates itself; the Homebrew version needs <code>brew upgrade claude-code</code> from time to time.</p>
-<p><strong>If Terminal says <code>zsh: command not found: claude</code>:</strong> Claude installed, but your Mac doesn't know where to find it. The installer puts Claude in a folder called <code>~/.local/bin</code>, and a new Mac doesn't look there. Run these two lines once:</p>
+<h3>If Terminal can't find claude</h3>
+<p>If you type <code>claude</code> and Terminal answers <code>zsh: command not found: claude</code>, Claude is usually installed, but your Mac doesn't know where to look for it. The installer puts Claude in a hidden folder, <code>~/.local/bin</code>, and many Macs don't search that folder. These steps tell your Mac where to look. You only need to do them once.</p>
+<ol>
+<li><p>Quit Terminal (<strong>Command + Q</strong>) and reopen it. Type <code>claude --version</code>. If it prints a version number, you're done: the old window just hadn't caught up.</p></li>
+<li><p>Check that Claude is really installed. Type:</p>
+<pre><code>ls ~/.local/bin/claude</code></pre>
+<p>If it prints something like <code>/Users/yourname/.local/bin/claude</code>, Claude is installed: go to step 3. If it prints <code>No such file or directory</code>, the install didn't finish. Run the install command at the top of this section again, let it finish, and read what it prints.</p></li>
+<li><p>Check which shell your Terminal uses. Type:</p>
+<pre><code>echo $0</code></pre>
+<p>Most Macs print <code>-zsh</code>. If yours prints <code>-bash</code>, use the bash version in step 4.</p></li>
+<li><p>Add Claude's folder to the places your Mac searches. Copy both lines, paste them into Terminal, and press <strong>Return</strong>:</p>
 <pre><code>echo 'export PATH="$HOME/.local/bin:$PATH"' &gt;&gt; ~/.zshrc
 source ~/.zshrc</code></pre>
-<p>The first line prints nothing when it works. Then quit Terminal (<strong>Command + Q</strong>), reopen it, and type <code>claude --version</code>. If it still fails, type <code>ls ~/.local/bin/claude</code>. If that says <code>No such file or directory</code>, the install didn't finish: run the installer command above again and read what it prints.</p>
+<p>Nothing appears when it works. Copy the lines exactly: the single quotes matter, and the two arrows <code>&gt;&gt;</code> add a line to the file (one arrow would erase it). If step 3 printed <code>-bash</code>, use this version instead:</p>
+<pre><code>echo 'export PATH="$HOME/.local/bin:$PATH"' &gt;&gt; ~/.bash_profile
+source ~/.bash_profile</code></pre></li>
+<li><p>Quit Terminal (<strong>Command + Q</strong>), reopen it, and type <code>claude --version</code>. It should print something like <code>2.1.319 (Claude Code)</code>.</p></li>
+</ol>
+<p>If it still doesn't work:</p>
+<ul>
+<li><strong>Check that the line was saved.</strong> Type <code>grep '.local/bin' ~/.zshrc</code>. It should print the <code>export PATH</code> line. If it prints nothing, repeat step 4.</li>
+<li><strong><code>zsh: permission denied: /Users/yourname/.zshrc</code></strong> in step 4: type <code>chmod u+w ~/.zshrc</code>, then repeat step 4. If that also says permission denied, stop and ask the instructor.</li>
+<li><strong>Anything else:</strong> send the instructor a screenshot of your Terminal window.</li>
+</ul>
 
 <h3>Install Homebrew on a Mac</h3>
 <p>Homebrew is a free tool that installs command-line programs on a Mac. You will need it later in this guide to install the GitHub CLI (<code>brew install gh</code>). To see whether you already have it, type <code>brew --version</code> in Terminal. If it prints a version number, skip to the next section.</p>
@@ -252,7 +272,7 @@ claude</code></pre></li>
 <table>
 <caption>Common problems, their likely causes, and fixes</caption>
 <tr><th scope="col">Symptom</th><th scope="col">Likely cause</th><th scope="col">Fix</th></tr>
-<tr><td><code>claude: command not found</code> right after install</td><td>Terminal opened before install finished</td><td>Close and reopen the terminal. On a Mac, if it persists, run the two PATH lines in the Mac install section, then reopen Terminal</td></tr>
+<tr><td><code>claude: command not found</code> right after install</td><td>Terminal opened before install finished</td><td>Close and reopen the terminal. On a Mac, if it persists, follow "If Terminal can't find claude" in the Mac install section</td></tr>
 <tr><td><code>'irm' is not recognized</code></td><td>Windows CMD, not PowerShell</td><td>Use the CMD command, or open PowerShell</td></tr>
 <tr><td><code>The token '&amp;&amp;' is not a valid statement separator</code></td><td>PowerShell, not CMD</td><td>Use the PowerShell command</td></tr>
 <tr><td>Sign-in says no Claude Code access</td><td>Free Claude plan</td><td>Upgrade to Pro, or use the course's provided account</td></tr>
