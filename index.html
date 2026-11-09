@@ -62,6 +62,33 @@ li{margin:.3rem 0}
 <p>Students who already use Homebrew can run this instead:</p>
 <pre><code>brew install --cask claude-code</code></pre>
 <p>The installer version updates itself; the Homebrew version needs <code>brew upgrade claude-code</code> from time to time.</p>
+<p><strong>If Terminal says <code>zsh: command not found: claude</code>:</strong> Claude installed, but your Mac doesn't know where to find it. The installer puts Claude in a folder called <code>~/.local/bin</code>, and a new Mac doesn't look there. Run these two lines once:</p>
+<pre><code>echo 'export PATH="$HOME/.local/bin:$PATH"' &gt;&gt; ~/.zshrc
+source ~/.zshrc</code></pre>
+<p>The first line prints nothing when it works. Then quit Terminal (<strong>Command + Q</strong>), reopen it, and type <code>claude --version</code>. If it still fails, type <code>ls ~/.local/bin/claude</code>. If that says <code>No such file or directory</code>, the install didn't finish: run the installer command above again and read what it prints.</p>
+
+<h3>Install Homebrew on a Mac</h3>
+<p>Homebrew is a free tool that installs command-line programs on a Mac. You will need it later in this guide to install the GitHub CLI (<code>brew install gh</code>). To see whether you already have it, type <code>brew --version</code> in Terminal. If it prints a version number, skip to the next section.</p>
+<p>Before you start, check two things:</p>
+<ul>
+<li><strong>Your macOS version.</strong> Click the Apple menu, then <strong>About This Mac</strong>. Homebrew officially supports macOS Sequoia (15) and newer. Versions 11 to 14 may work but are unsupported. If your Mac is older than that, skip Homebrew and use the <code>gh</code> installer from <a href="https://cli.github.com">cli.github.com</a> in the Git section below.</li>
+<li><strong>Your account.</strong> You must be signed in to a Mac account with administrator rights, and you need its password.</li>
+</ul>
+<ol>
+<li><p>Open Terminal: press <strong>Command + Space</strong>, type <code>Terminal</code>, and press <strong>Return</strong>.</p></li>
+<li><p>Copy this whole line, paste it into Terminal, and press <strong>Return</strong>:</p>
+<pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre></li>
+<li><p>When Terminal shows <code>Password:</code>, type your Mac login password and press <strong>Return</strong>. Nothing appears while you type, not even dots. That is normal.</p></li>
+<li><p>The script lists what it is about to install and says <code>Press RETURN/ENTER to continue</code>. Press <strong>Return</strong>.</p></li>
+<li><p>If your Mac lacks Apple's Command Line Tools, the script downloads them. This can take 5 to 15 minutes. Leave Terminal open. If a pop-up asks to install the tools, click <strong>Install</strong> and accept the license.</p></li>
+<li><p>When it finishes, Terminal prints <code>Installation successful!</code> followed by a <strong>Next steps</strong> section. On a Mac with Apple silicon (M1 or later), you must run the commands listed under Next steps, or Terminal will not find <code>brew</code>. Copy them from your own Terminal window. They usually look like this:</p>
+<pre><code>echo &gt;&gt; ~/.zprofile
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' &gt;&gt; ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"</code></pre>
+<p>Older Intel Macs install Homebrew in <code>/usr/local</code>, which Terminal already searches, so they usually show no Next steps.</p></li>
+<li><p>Quit Terminal (<strong>Command + Q</strong>), reopen it, and type <code>brew --version</code>. It should print something like <code>Homebrew 4.6.0</code>.</p></li>
+</ol>
+<p>If step 7 says <code>zsh: command not found: brew</code>, you skipped step 6: run those lines, then reopen Terminal. To check the whole setup, run <code>brew doctor</code>. The reply <code>Your system is ready to brew.</code> means all is well.</p>
 
 <h2>Install on Windows</h2>
 <p>Install <a href="https://git-scm.com/downloads/win">Git for Windows</a> first, accepting the default options. It is optional for Claude Code, but students need Git for the GitHub steps anyway, and it gives Claude Code a Bash shell to work in.</p>
@@ -167,7 +194,7 @@ notepad $HOME\.claude\settings.json</code></pre></li>
 <div class="table-wrap"><table>
 <caption>Commands to install Git and the GitHub CLI</caption>
 <tr><th scope="col">System</th><th scope="col">Install command</th></tr>
-<tr><td>macOS</td><td><code>xcode-select --install</code> (gives Git), then <code>brew install gh</code></td></tr>
+<tr><td>macOS</td><td><code>xcode-select --install</code> (gives Git), then, once Homebrew is installed (see the Mac section above), <code>brew install gh</code></td></tr>
 <tr><td>Windows</td><td>Git for Windows (installed above), then <code>winget install --id GitHub.cli</code></td></tr>
 <tr><td>Linux / Chromebook / WSL</td><td><code>sudo apt install -y git</code>, then follow <a href="https://github.com/cli/cli/blob/trunk/docs/install_linux.md">GitHub's Linux install steps for gh</a></td></tr>
 </table></div>
@@ -264,7 +291,7 @@ claude</code></pre></li>
 <div class="table-wrap"><table>
 <caption>Common problems, their likely causes, and fixes</caption>
 <tr><th scope="col">Symptom</th><th scope="col">Likely cause</th><th scope="col">Fix</th></tr>
-<tr><td><code>claude: command not found</code> right after install</td><td>Terminal opened before install finished</td><td>Close and reopen the terminal; if it persists, run the installer again and read its PATH message</td></tr>
+<tr><td><code>claude: command not found</code> right after install</td><td>Terminal opened before install finished</td><td>Close and reopen the terminal. On a Mac, if it persists, run the two PATH lines in the Mac install section, then reopen Terminal</td></tr>
 <tr><td><code>'irm' is not recognized</code></td><td>Windows CMD, not PowerShell</td><td>Use the CMD command, or open PowerShell</td></tr>
 <tr><td><code>The token '&amp;&amp;' is not a valid statement separator</code></td><td>PowerShell, not CMD</td><td>Use the PowerShell command</td></tr>
 <tr><td>Sign-in says no Claude Code access</td><td>Free Claude plan</td><td>Upgrade to Pro, or use the course's provided account</td></tr>
@@ -283,6 +310,7 @@ claude</code></pre></li>
 <li><a href="https://code.claude.com/docs/en/sandboxing">Claude Code sandboxing</a>, <a href="https://code.claude.com/docs/en/permissions">permissions</a>, and <a href="https://code.claude.com/docs/en/settings">settings</a> (Anthropic; sandbox support by system, folder-lock settings, and settings file locations checked 2026-11-06)</li>
 <li><a href="https://cli.github.com/manual/">GitHub CLI manual</a> (GitHub; <code>gh</code> install and <code>gh auth login</code>, from general knowledge, not re-checked today)</li>
 <li><a href="https://git-scm.com/downloads">Git downloads</a></li>
+<li><a href="https://brew.sh">Homebrew</a> and <a href="https://docs.brew.sh/Installation">Homebrew installation docs</a> (install command, supported macOS versions, and install locations checked 2026-11-09)</li>
 </ul>
 
 </main>
